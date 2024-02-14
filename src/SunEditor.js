@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 
 import 'suneditor/dist/css/suneditor.min.css'; // Import Sun Editor's CSS File
+import lang from './lang/ru';
 import _SunEditor from 'suneditor-react';
 
 const buttonList = [
@@ -39,7 +40,7 @@ const SunEditor = ({ input, config = {} }) => {
         ...config,
         buttonList,
       }}
-      // lang='ru'
+      lang={lang}
     />
   );
 };
