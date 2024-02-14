@@ -5,6 +5,7 @@ import { Form, Field } from 'react-final-form'
 import arrayMutators from 'final-form-arrays'
 import { FieldArray } from 'react-final-form-arrays'
 import Editor from './Editor';
+import SunEditor from './SunEditor';
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 
@@ -73,7 +74,7 @@ const App = () => {
                       />
                       <Field
                         name={`${name}.lastName`}
-                        component={Editor}
+                        component={SunEditor}
                         placeholder="Last Name"
                       />
                       <span
