@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import 'suneditor/dist/css/suneditor.min.css'; // Import Sun Editor's CSS File
 import lang from './lang/ru';
@@ -15,33 +15,30 @@ const buttonList = [
 ];
 
 const SunEditor = ({ input, config = {} }) => {
-
+  const editorRef = useRef(null);
   useEffect(() => {
-    // Fixing issue with text alignment in editor
-    // It seems the text alignment in SunEditor doesn't work correctly when editing the existing value
-    // SunEditor bug
-    if (input?.value) {
-      const editArea = document.querySelector('.se-wrapper-wysiwyg');
-      editArea.innerHTML = input.value;
-    }
-  }, [input]);
+    // editorRef.current.querySelector('.se-wrapper-wysiwyg').innerHTML = input?.value;
+  }, [input?.value]);
 
   return (
-    <_SunEditor
-      defaultValue={input?.value ?? ''}
-      // onChange={onBlur}
-      // onImageUpload={handleFileUpload}
-      // onVideoUpload={handleFileUpload}
-      // onAudioUpload={handleFileUpload}
-      onBlur={(e, value) => input && input?.onChange(value)}
-      setOptions={{
-        height: '50px',
-        mode: 'inline',
-        ...config,
-        buttonList,
-      }}
-      lang={lang}
-    />
+    // <div ref={editorRef}>
+      <_SunEditor
+        key={input?.value}
+        defaultValue={input?.value ?? ''}
+        // onChange={onBlur}
+        // onImageUpload={handleFileUpload}
+        // onVideoUpload={handleFileUpload}
+        // onAudioUpload={handleFileUpload}
+        onChange={(content) => input && input?.onChange(content)}
+        setOptions={{
+          height: '50px',
+          mode: 'inline',
+          ...config,
+          buttonList,
+        }}
+        lang={lang}
+      />
+    // </div>
   );
 };
 

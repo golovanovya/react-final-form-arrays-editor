@@ -54,7 +54,7 @@ const App = () => {
               <div className="buttons">
                 <button
                   type="button"
-                  onClick={() => push('customers', {firstName: 'John', lastName: 'Wick'})}
+                  onClick={() => push('customers', {})}
                 >
                   Add Customer
                 </button>
