@@ -14,31 +14,24 @@ const buttonList = [
   ]
 ];
 
-const SunEditor = ({ input, config = {} }) => {
-  const editorRef = useRef(null);
-  useEffect(() => {
-    // editorRef.current.querySelector('.se-wrapper-wysiwyg').innerHTML = input?.value;
-  }, [input?.value]);
+const SunEditor = ({ field, form, config = {} }) => {
 
   return (
-    // <div ref={editorRef}>
-      <_SunEditor
-        key={input?.value}
-        defaultValue={input?.value ?? ''}
-        // onChange={onBlur}
-        // onImageUpload={handleFileUpload}
-        // onVideoUpload={handleFileUpload}
-        // onAudioUpload={handleFileUpload}
-        onChange={(content) => input && input?.onChange(content)}
-        setOptions={{
-          height: '50px',
-          mode: 'inline',
-          ...config,
-          buttonList,
-        }}
-        lang={lang}
-      />
-    // </div>
+    <_SunEditor
+      setContents={field?.value ?? ''}
+      // onChange={onBlur}
+      // onImageUpload={handleFileUpload}
+      // onVideoUpload={handleFileUpload}
+      // onAudioUpload={handleFileUpload}
+      onChange={(content) => form.setFieldValue(field.name, content)}
+      setOptions={{
+        height: '50px',
+        mode: 'inline',
+        ...config,
+        buttonList,
+      }}
+      lang={lang}
+    />
   );
 };
 

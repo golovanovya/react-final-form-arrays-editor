@@ -1,11 +1,9 @@
 import React, { useState } from 'react'
 import { render } from 'react-dom'
 import Styles from './Styles'
-import { Form, Field } from 'react-final-form'
-import arrayMutators from 'final-form-arrays'
-import { FieldArray } from 'react-final-form-arrays'
 import Editor from './Editor';
 import SunEditor from './SunEditor';
+import { Formik, Form, Field, FieldArray } from 'formik';
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 
@@ -21,11 +19,8 @@ const App = () => {
       <a href="https://github.com/erikras/react-final-form#-react-final-form">
         Read Docs
       </a>
-      <Form
+      <Formik
         onSubmit={onSubmit}
-        mutators={{
-          ...arrayMutators
-        }}
         initialValues={{
           company: 'Test company',
           customers: [
@@ -35,73 +30,64 @@ const App = () => {
             },
           ],
         }}
-        render={({
-          handleSubmit,
-          form: {
-            mutators: { push, pop }
-          }, // injected from final-form-arrays above
-          pristine,
-          form,
-          submitting,
-          values
-        }) => {
+        render={({ values }) => {
           return (
-            <form onSubmit={handleSubmit}>
+            <Form>
               <div>
                 <label>Company</label>
                 <Field name="company" component={Editor} />
               </div>
-              <div className="buttons">
-                <button
-                  type="button"
-                  onClick={() => push('customers', {})}
-                >
-                  Add Customer
-                </button>
-                <button type="button" onClick={() => pop('customers')}>
-                  Remove Customer
-                </button>
-              </div>
-              <FieldArray name="customers">
-                {({ fields }) =>
-                  fields.map((name, index) => (
-                    <div key={name}>
-                      <label>Cust. #{index + 1}</label>
-                      <Field
-                        name={`${name}.firstName`}
-                        component="input"
-                        placeholder="First Name"
-                      />
-                      <Field
-                        name={`${name}.lastName`}
-                        component={SunEditor}
-                        placeholder="Last Name"
-                      />
-                      <span
-                        onClick={() => fields.remove(index)}
-                        style={{ cursor: 'pointer' }}
+              <FieldArray
+                name="customers"
+                render={arrayHelpers => (
+                  <>
+                    <div className="buttons">
+                      <button
+                        type="button"
+                        onClick={() => arrayHelpers.push()}
                       >
-                        ❌
-                      </span>
+                        Add Customer
+                      </button>
+                      <button type="button" onClick={() => arrayHelpers.pop()}>
+                        Remove Customer
+                      </button>
                     </div>
-                  ))
-                }
-              </FieldArray>
+                    {values.customers.map((customer, index) => (
+                      <div key={index}>
+                        <label>Cust. #{index + 1}</label>
+                        <Field
+                          name={`customers.${index}.firstName`}
+                          placeholder="First Name"
+                        />
+                        <Field
+                          name={`customers.${index}.lastName`}
+                          component={SunEditor}
+                          placeholder="Last Name"
+                        />
+                        <span
+                          onClick={() => arrayHelpers.remove(index)}
+                          style={{ cursor: 'pointer' }}
+                        >
+                          ❌
+                        </span>
+                      </div>
+                    ))}
+                  </>
+                )}
+              />
 
               <div className="buttons">
-                <button type="submit" disabled={submitting || pristine}>
+                <button type="submit">
                   Submit
                 </button>
                 <button
-                  type="button"
-                  onClick={form.reset}
-                  disabled={submitting || pristine}
+                  type="reset"
                 >
                   Reset
                 </button>
               </div>
               <pre>{JSON.stringify(values, 0, 2)}</pre>
-            </form>
+            </Form>
           )
         }}
       />

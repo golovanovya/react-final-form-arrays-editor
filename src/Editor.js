@@ -3,7 +3,8 @@ import React from 'react'
 import { Editor as _Editor } from '@tinymce/tinymce-react';
 
 const Editor = ({
-  input,
+  field,
+  form,
   ...rest
 }) => {
   return (
@@ -18,7 +19,7 @@ const Editor = ({
     <_Editor
       apiKey='7r2ckfol312wws1v98jjic4l9us0e164iz44bn1ywesqkuw3'
       {...rest}
-      value={input.value}
+      value={field.value}
       init={{
         height: 500,
         menubar: false,
@@ -29,7 +30,7 @@ const Editor = ({
       }}
       onEditorChange={content => {
         // onChange && onChange(content)
-        input.onChange(content)
+        form.setFieldValue(field.name, content)
       }}
     />
   );
